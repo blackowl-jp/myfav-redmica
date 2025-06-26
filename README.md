@@ -20,21 +20,21 @@ Redmine に自分が気に入ったプラグインやテーマを詰め込んだ
 ## 起動までの手順
 
 1. リポジトリからファイル一式を取得して、Docker ホストの任意のディレクトリに格納します。
-    * 以降は `/opt/myfav-redmine` に格納した前提で説明します。
-1. `/opt/myfav-redmine/redmine/config/configuration.yml` にメールの設定などをします。
+    * 以降は `/opt/myfav-redmica` に格納した前提で説明します。
+1. `/opt/myfav-redmica/redmine/config/configuration.yml` にメールの設定などをします。
     * 設定の詳細は [Redmineガイドのメールの設定](http://guide.redmine.jp/Email_Configuration/) を参考にしてください。
     * ビルドすると、このファイルが Redmine の Docker コンテナに取り込まれます。
-1. Redmine 添付ファイルやログの出力先を以下のパスにバインドマウントしているので、必要に応じて `/opt/myfav-redmine/docker-compose.yml` の volumes を変更してください。
+1. Redmine 添付ファイルやログの出力先を以下のパスにバインドマウントしているので、必要に応じて `/opt/myfav-redmica/docker-compose.yml` の volumes を変更してください。
     * 添付ファイル： `/srv/redmine/files`
     * ログ
         * Redmine 本体： `/var/log/redmine`
         * ChupaText サーバー： `/var/log/redmine-chupa-text`
-1. データベース名／ユーザー／パスワードを `/opt/myfav-redmine/docker-compose.yml` に直書きしているので、必要に応じて変更してください。（動作の確認する程度の利用であればそのままでもよいです）
-1. [Redmine theme for kids / Kodomo Redmine](https://github.com/akiko-pusu/redmine_theme_kodomo) と [Redmine theme for kids midori version / Kodomo Redmine green version](https://github.com/akiko-pusu/redmine_theme_kodomo_midori) に追加フォントを組み込む場合、 `/opt/myfav-redmine/redmine/optional/redmine_theme_kodomo/font` ディレクトリに ttf ファイルを配置してください。
+1. データベース名／ユーザー／パスワードを `/opt/myfav-redmica/docker-compose.yml` に直書きしているので、必要に応じて変更してください。（動作の確認する程度の利用であればそのままでもよいです）
+1. [Redmine theme for kids / Kodomo Redmine](https://github.com/akiko-pusu/redmine_theme_kodomo) と [Redmine theme for kids midori version / Kodomo Redmine green version](https://github.com/akiko-pusu/redmine_theme_kodomo_midori) に追加フォントを組み込む場合、 `/opt/myfav-redmica/redmine/optional/redmine_theme_kodomo/font` ディレクトリに ttf ファイルを配置してください。
 1. 以下のコマンドを実行して、Docker Compose からビルド・起動させます。
 
     ```bash
-    $ cd /opt/myfav-redmine
+    $ cd /opt/myfav-redmica
     $ docker-compose up -d --build
     ```
 1. http://localhost:3000 にアクセスして、Redmine の初期設定を行います。
@@ -44,7 +44,7 @@ Redmine に自分が気に入ったプラグインやテーマを詰め込んだ
 
 ### 設定の補足
 
-* Redmine にプラグインやテーマを追加したいときは、 `/opt/myfav-redmine/redmine/Dockerfile` を編集してください。（周辺の行を真似れば追加できると思います） `docker-coompose down && docker compose up -d --build` で実行環境を更新できます。
+* Redmine にプラグインやテーマを追加したいときは、 `/opt/myfav-redmica/redmine/Dockerfile` を編集してください。（周辺の行を真似れば追加できると思います） `docker-coompose down && docker compose up -d --build` で実行環境を更新できます。
     * Docker コンテナの起動時に毎回プラグインのマイグレート（ `redmine:plugins:migrate` ） がかかるようにしています。
 * 機能として必須ではないですが、Web フロントエンドに Nginx などを置いて、Let's Encrypt などで HTTPS 化しておいた方が望ましいです。
     * 僕は Nginx だけは Docker ホスト側にインストールしていて、バックエンドとしてこの Docker Compose 環境を動かしています。同じ Docker ホスト上に他にもいくつかサービスを動かしていることもあって、この構成の方が扱いやすかったという事情があります。
